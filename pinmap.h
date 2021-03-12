@@ -10,4 +10,4 @@ typedef struct PIN_STRUCT{
     int num;
 } PIN;
 
-#endif /* KEYPADFUNCTIONS_H_ */
+#endif /* PINMAP_H_ */
