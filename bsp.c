@@ -34,7 +34,7 @@ void init_PIN(PIN currentPIN)
         case OUTPUT:
             RCC->IOPENR |= (2U << 0);
             GPIOA->MODER &= ~(3U << 2 * currentPIN.num);
-			GPIOA->MODER |= (1U << 2 * currentPIN.num);
+	    GPIOA->MODER |= (1U << 2 * currentPIN.num);
             break;
         default:
             break
