@@ -11,46 +11,81 @@
 
 void init_PIN(PIN currentPIN)
 {
-    switch(currentPIN.type)
+    if(currentPIN.state == 'A')
     {
-        case A:
-            RCC->IOPENR |= (1U << 0);
-            break;
-        case B:
-            RCC->IOPENR |= (2U << 0);
-            break;
-        case C:
-            RCC->IOPENR |= (4U << 0);
-            break;
-        default:
-            break
+        switch(currentPIN.state)
+        {
+            case INPUT:
+                RCC->IOPENR |= (1U << 0);
+                GPIOA->MODER &= ~(3U << 2 * currentPIN.num);
+                break;
+            case OUTPUT:
+                RCC->IOPENR |= (2U << 0);
+                GPIOA->MODER &= ~(3U << 2 * currentPIN.num);
+                GPIOA->MODER |= (1U << 2  * currentPIN.num);
+                break;
+            case ALTERNATE:
+                GPIOA->MODER &= ~(3U << 2 * currentPIN.num);
+                GPIOA->MODER |= (2U << 2  * currentPIN.num);
+                break;
+            case ANALOG:
+                GPIOA->MODER &= ~(3U << 2 * currentPIN.num);
+                GPIOA->MODER |= (3U << 2  * currentPIN.num);
+                break;
+            default:
+                break;
+        }
     }
-    switch(currentPIN.state)
+
+    else if(currentPIN.state == 'B')
     {
-        case INPUT:
-            RCC->IOPENR |= (1U << 0);
-            GPIOA->MODER &= ~(3U << 2 * currentPIN.num);
-            break;
-        case OUTPUT:
-            RCC->IOPENR |= (2U << 0);
-            GPIOA->MODER &= ~(3U << 2 * currentPIN.num);
-	    GPIOA->MODER |= (1U << 2 * currentPIN.num);
-            break;
-        default:
-            break
+        switch(currentPIN.state)
+        {
+            case INPUT:
+                RCC->IOPENR |= (1U << 0);
+                GPIOB->MODER &= ~(3U << 2 * currentPIN.num);
+                break;
+            case OUTPUT:
+                RCC->IOPENR |= (2U << 0);
+                GPIOB->MODER &= ~(3U << 2 * currentPIN.num);
+                GPIOB->MODER |= (1U << 2  * currentPIN.num);
+                break;
+            case ALTERNATE:
+                GPIOB->MODER &= ~(3U << 2 * currentPIN.num);
+                GPIOB->MODER |= (2U << 2  * currentPIN.num);
+                break;
+            case ANALOG:
+                GPIOB->MODER &= ~(3U << 2 * currentPIN.num);
+                GPIOB->MODER |= (3U << 2  * currentPIN.num);
+                break;
+            default:
+                break;
+        }
     }
-    switch(currentPIN.type)
+
+    else
     {
-        case A:
-            RCC->IOPENR |= (1U << 0);
-            break;
-        case B:
-            RCC->IOPENR |= (2U << 0);
-            break;
-        case C:
-            RCC->IOPENR |= (4U << 0);
-            break;
-        default:
-            break;
+        switch(currentPIN.state)
+        {
+            case INPUT:
+                RCC->IOPENR |= (1U << 0);
+                GPIOC->MODER &= ~(3U << 2 * currentPIN.num);
+                break;
+            case OUTPUT:
+                RCC->IOPENR |= (2U << 0);
+                GPIOC->MODER &= ~(3U << 2 * currentPIN.num);
+                GPIOC->MODER |= (1U << 2  * currentPIN.num);
+                break;
+            case ALTERNATE:
+                GPIOC->MODER &= ~(3U << 2 * currentPIN.num);
+                GPIOC->MODER |= (2U << 2  * currentPIN.num);
+                break;
+            case ANALOG:
+                GPIOC->MODER &= ~(3U << 2 * currentPIN.num);
+                GPIOC->MODER |= (3U << 2  * currentPIN.num);
+                break;
+            default:
+                break;
+        }
     }
 }
