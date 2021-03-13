@@ -11,7 +11,7 @@
 
 void init_PIN(PIN currentPIN)
 {
-    if(currentPIN.state == 'A')
+    if(currentPIN.type == 'A')
     {
         switch(currentPIN.state)
         {
@@ -37,7 +37,7 @@ void init_PIN(PIN currentPIN)
         }
     }
 
-    else if(currentPIN.state == 'B')
+    else if(currentPIN.type == 'B')
     {
         switch(currentPIN.state)
         {
