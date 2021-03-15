@@ -289,6 +289,94 @@ void start_conversion(void)
     while(!(ADC1->ISR & (1U << 2)));
 }
 
+void init_UART(PIN UART_TX_PIN, PIN UART_RX_PIN, uint32_t baud) {
+	
+    init_PIN(UART_TX_PIN);
+    init_PIN(UART_RX_PIN);
+
+	if(UART_TX_PIN.type == 'A')
+    {
+        GPIOA->PUPDR |= (1U << 2 * UART_TX_PIN.num);
+        GPIOA->OTYPER &= ~(1U << UART_TX_PIN.num);
+        GPIOA->OTYPER |= (1U << UART_TX_PIN.num);
+
+        if (UART_TX_PIN.num < 8)
+        {
+            GPIOA->AFR[0] &= ~(0xFU << 4 * UART_TX_PIN.num);
+	        GPIOA->AFR[0] |= (6U << 4 * UART_TX_PIN.num);
+        }
+        else
+        {
+            GPIOA->AFR[1] &= ~(0xFU << 4 * (UART_TX_PIN.num - 8));
+	        GPIOA->AFR[1] |= (6U << 4 * (UART_TX_PIN.num - 8));
+        }     
+    }
+    
+    else
+    {
+        GPIOB->PUPDR |= (1U << 2 * UART_TX_PIN.num);
+        GPIOB->OTYPER &= ~(1U << UART_TX_PIN.num);
+        GPIOB->OTYPER |= (1U << UART_TX_PIN.num);
+
+        if (UART_TX_PIN.num < 8)
+        {
+            GPIOB->AFR[0] &= ~(0xFU << 4 * UART_TX_PIN.num);
+	        GPIOB->AFR[0] |= (6U << 4 * UART_TX_PIN.num);
+        }
+        else
+        {
+            GPIOB->AFR[1] &= ~(0xFU << 4 * (UART_TX_PIN.num - 8));
+	        GPIOB->AFR[1] |= (6U << 4 * (UART_TX_PIN.num - 8));
+        } 
+    }
+
+    if(UART_RX_PIN.type == 'A')
+    {
+        GPIOA->PUPDR |= (1U << 2 * UART_RX_PIN.num);
+        GPIOA->OTYPER &= ~(1U << UART_RX_PIN.num);
+        GPIOA->OTYPER |= (1U << UART_RX_PIN.num);
+
+        if (UART_RX_PIN.num < 8)
+        {
+            GPIOA->AFR[0] &= ~(0xFU << 4 * UART_RX_PIN.num);
+	        GPIOA->AFR[0] |= (6U << 4 * UART_RX_PIN.num);
+        }
+        else
+        {
+            GPIOA->AFR[1] &= ~(0xFU << 4 * (UART_RX_PIN.num - 8));
+	        GPIOA->AFR[1] |= (6U << 4 * (UART_RX_PIN.num - 8));
+        }  
+    }
+
+    else
+    {
+        GPIOB->PUPDR |= (1U << 2 * UART_RX_PIN.num);
+        GPIOB->OTYPER &= ~(1U << UART_RX_PIN.num);
+        GPIOB->OTYPER |= (1U << UART_RX_PIN.num);
+
+        if (UART_RX_PIN.num < 8)
+        {
+            GPIOB->AFR[0] &= ~(0xFU << 4 * UART_RX_PIN.num);
+	        GPIOB->AFR[0] |= (6U << 4 * UART_RX_PIN.num);
+        }
+        else
+        {
+            GPIOB->AFR[1] &= ~(0xFU << 4 * (UART_RX_PIN.num - 8));
+	        GPIOB->AFR[1] |= (6U << 4 * (UART_RX_PIN.num - 8));
+        } 
+    }
+
+    RCC->APBENR1 |= (1U << 17);
+	
+	USART2->CR1 = 0;               //clearing control register
+	USART2->CR1 |= (1U << 3);      //transmitter en
+	USART2->CR1 |= (1U << 2);      //receiver en
+	USART2->CR1 |= (1U << 5);      //setting band rate
+	USART2->BRR = (uint16_t) (SystemCoreClock / baud);
+	USART2->CR1 |= (1U);           //usart en
+
+}
+
 void init_I2C(PIN SCL_PIN, PIN SDA_PIN)
 {
     init_PIN(SCL_PIN);
@@ -299,6 +387,17 @@ void init_I2C(PIN SCL_PIN, PIN SDA_PIN)
         GPIOA->PUPDR |= (1U << 2 * SCL_PIN.num);
         GPIOA->OTYPER &= ~(1U << SCL_PIN.num);
         GPIOA->OTYPER |= (1U << SCL_PIN.num);
+
+        if (SCL_PIN.num < 8)
+        {
+            GPIOA->AFR[0] &= ~(0xFU << 4 * SCL_PIN.num);
+	        GPIOA->AFR[0] |= (6U << 4 * SCL_PIN.num);
+        }
+        else
+        {
+            GPIOA->AFR[1] &= ~(0xFU << 4 * (SCL_PIN.num - 8));
+	        GPIOA->AFR[1] |= (6U << 4 * (SCL_PIN.num - 8));
+        }     
     }
     
     else
@@ -306,6 +405,17 @@ void init_I2C(PIN SCL_PIN, PIN SDA_PIN)
         GPIOB->PUPDR |= (1U << 2 * SCL_PIN.num);
         GPIOB->OTYPER &= ~(1U << SCL_PIN.num);
         GPIOB->OTYPER |= (1U << SCL_PIN.num);
+
+        if (SCL_PIN.num < 8)
+        {
+            GPIOB->AFR[0] &= ~(0xFU << 4 * SCL_PIN.num);
+	        GPIOB->AFR[0] |= (6U << 4 * SCL_PIN.num);
+        }
+        else
+        {
+            GPIOB->AFR[1] &= ~(0xFU << 4 * (SCL_PIN.num - 8));
+	        GPIOB->AFR[1] |= (6U << 4 * (SCL_PIN.num - 8));
+        } 
     }
 
     if(SDA_PIN.type == 'A')
@@ -313,6 +423,17 @@ void init_I2C(PIN SCL_PIN, PIN SDA_PIN)
         GPIOA->PUPDR |= (1U << 2 * SDA_PIN.num);
         GPIOA->OTYPER &= ~(1U << SDA_PIN.num);
         GPIOA->OTYPER |= (1U << SDA_PIN.num);
+
+        if (SDA_PIN.num < 8)
+        {
+            GPIOA->AFR[0] &= ~(0xFU << 4 * SDA_PIN.num);
+	        GPIOA->AFR[0] |= (6U << 4 * SDA_PIN.num);
+        }
+        else
+        {
+            GPIOA->AFR[1] &= ~(0xFU << 4 * (SDA_PIN.num - 8));
+	        GPIOA->AFR[1] |= (6U << 4 * (SDA_PIN.num - 8));
+        }  
     }
 
     else
@@ -320,12 +441,19 @@ void init_I2C(PIN SCL_PIN, PIN SDA_PIN)
         GPIOB->PUPDR |= (1U << 2 * SDA_PIN.num);
         GPIOB->OTYPER &= ~(1U << SDA_PIN.num);
         GPIOB->OTYPER |= (1U << SDA_PIN.num);
+
+        if (SDA_PIN.num < 8)
+        {
+            GPIOB->AFR[0] &= ~(0xFU << 4 * SDA_PIN.num);
+	        GPIOB->AFR[0] |= (6U << 4 * SDA_PIN.num);
+        }
+        else
+        {
+            GPIOB->AFR[1] &= ~(0xFU << 4 * (SDA_PIN.num - 8));
+	        GPIOB->AFR[1] |= (6U << 4 * (SDA_PIN.num - 8));
+        } 
     }
-	
-	GPIOB->AFR[0] &= ~(0xFU << 4 * 6);
-	GPIOB->AFR[0] |= (6U << 4 * 6);
-	GPIOB->AFR[0] &= ~(0xFU << 4 * 7);
-	GPIOB->AFR[0] |= (6U << 4 * 7);
+
 	//Enable I2C
 	RCC->APBENR1 |= (1U << 21);
 	I2C1->CR1 = 0;
