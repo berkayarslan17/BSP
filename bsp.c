@@ -5,6 +5,7 @@
  *Author: Berkay Arslan
  *
  */
+
 #include "stm32g0xx.h"
 #include "bsp.h"
 #include "pinmap.h"
