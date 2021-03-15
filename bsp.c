@@ -2,7 +2,8 @@
  *
  * BOARD SUPPORT PACKAGE for STM32G031K8 Microprocessor
  *
- *Author: Berkay Arslan
+ *
+ * Author: Berkay Arslan
  *
  */
 
