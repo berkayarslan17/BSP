@@ -1,12 +1,20 @@
+/*
+ * pinmap.h
+ *
+ * 
+ * Author: Berkay Arslan
+ */
 
 #ifndef PINMAP_H_
 #define PINMAP_H_
 
 #include <stdio.h>
 
+enum state_type { INPUT, OUTPUT, ALTERNATE, ANALOG };
+
 typedef struct PIN_STRUCT{
     char const type;
-    char const* state;
+    int state;
     int num;
     int adc_channel;
 } PIN;
