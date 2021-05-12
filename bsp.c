@@ -88,6 +88,7 @@ void BSP_init_PIN(PIN currentPIN) {
 }
 
 // Initialize the timers in the case of their structures.
+// deneme mesajı
 void BSP_init_TIM(TIM currentTIM) {
   if (currentTIM.APBENR_type == 1) {
     RCC->APBENR1 |= (1U << currentTIM.APBENR_num);
